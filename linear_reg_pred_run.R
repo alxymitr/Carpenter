@@ -61,3 +61,33 @@ ynew.mean <- apply( post$ynew , 2 , mean )
 plot(x,y, xlim = c(1, 15), ylim = c(10, 20))
 points(xnew, ynew.mean, col = "red")
 shade(ynew.PI, xnew)
+
+# prediction with generated quantities ------------------------------------
+
+model <- stan_model("linear_reg_pred_gq.stan")
+
+fit <-
+  stan(
+    "linear_reg_pred_gq.stan",
+    data = c("N", "x", "y", "Nnew", "xnew"),
+    iter = 2000
+  )
+
+precis(fit, depth = 2)
+#          Mean StdDev lower 0.89 upper 0.89 n_eff Rhat
+# alpha    9.72   0.68       8.74      10.92  1486    1
+# beta     0.48   0.11       0.30       0.65  1375    1
+# sigma    1.00   0.31       0.59       1.41  1340    1
+# ynew[1] 15.01   1.24      13.19      17.11  2834    1
+# ynew[2] 15.46   1.34      13.33      17.45  2381    1
+# ynew[3] 15.95   1.39      13.92      18.12  2226    1
+# ynew[4] 16.45   1.46      13.99      18.60  2221    1
+# ynew[5] 16.86   1.55      14.51      19.25  2017    1
+
+post <- extract(fit)
+ynew.PI <- apply( post$ynew , 2 , PI )
+ynew.mean <- apply( post$ynew , 2 , mean )
+
+plot(x,y, xlim = c(1, 15), ylim = c(10, 20))
+points(xnew, ynew.mean, col = "red")
+shade(ynew.PI, xnew)
