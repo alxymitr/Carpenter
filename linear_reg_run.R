@@ -11,7 +11,7 @@ library(rethinking)
 # 
 # + constrained versions thereof
 
-N <- 10
+N <- 10L
 
 x <- c(1,2,3,5,4,3,1,2,1,4)
 y <- c(2,3,4,2,1,6,4,2,1,2)
